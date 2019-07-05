@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace对sql分类管理，sql隔离-->
+<mapper namespace="test">
+    <!--在映射文件中配置sql语句 -->
+    <!--需求：通过id查询用户表的id-->
+    <!-- id:表示映射文件中的sql
+    #{}表示占位符
+    parameterType指定输入参数的类型
+    resultType指定映射的输出java对象
+    -->
+    <select id="findUserById" parameterType="int" resultType="sample.User">
+        SELECT * FROM user WHERE id = #{value}
+    </select>
+
+    <!-- 可能返回多条-->
+    <!--
+    resultType:单条记录指定的对象类型
+    ${}:将接收到的参数内容不加任何修饰拼接到sql中
+    可能会引起sql注入，如果传入的是简单类型，{}只能使用value
+    -->
+    <select id="findUserByName" parameterType="String" resultType="sample.User">
+        SELECT * FROM user WHERE name LIKE '%${value}%'
+    </select>
+
+    <select id="findAll" resultType="sample.User">
+        SELECT * FROM user
+    </select>
+
+    <insert id="insertUser" parameterType="sample.User">
+        INSERT INTO `user`(id,name)value(#{id},#{name});
+    </insert>
+
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from user where id=#{id}
+    </delete>
+
+    <update id="updateUser" parameterType="sample.User">
+        update user set name=#{name} where id=#{id}
+    </update>
+</mapper>
